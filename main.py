@@ -1,52 +1,26 @@
-from body import Body
-from Config import *
-import numpy as np
 import cupy as cp
+from tqdm import tqdm
 
-def get_force(body1: Body, body2: Body) -> np.ndarray:
-    v: np.ndarray = np.array([body2.x - body1.x, body2.y - body1.y])
-    len_v: float = norm if (norm := np.linalg.norm(v)) >= EPS else EPS
-
-    return G * body1.mass * body2.mass / len_v ** 3 * v
+from Config import *
 
 
-def calc_f(bodies: list[Body]) -> list[np.ndarray]:
-    f_mat: list[list[np.ndarray]] = [[np.array([0, 0])] * len(bodies) for _ in range(len(bodies))]
+def task1_run(body_mass: cp.ndarray, body_pos: cp.ndarray, body_vel: cp.ndarray, t_end: float, dt: float) -> cp.ndarray:
+    result: cp.ndarray = cp.zeros((int(cp.ceil(t_end / dt)) + 1, body_pos.size + 1), dtype=cp.float64)
+    result[:, 0] = cp.arange(0, t_end + dt, dt)
+    result[0, 1:] = body_pos.flatten()
 
-    for ind1, body1 in enumerate(bodies[1:]):
-        for ind2, body2 in enumerate(bodies[:ind1 + 1]):
-            f_mat[ind1 + 1][ind2] = get_force(body1, body2)
-            f_mat[ind2][ind1 + 1] = - get_force(body1, body2)
+    for i in tqdm(range(int(cp.ceil(t_end / dt)))):
+        v_mat: cp.ndarray = body_pos - body_pos[:, cp.newaxis, :]
+        v_mat_len: cp.ndarray = cp.linalg.norm(v_mat, axis=2)
+        v_mat_len[v_mat_len < EPS] = EPS
+        mass_mat: cp.ndarray = cp.dot(body_mass[:, cp.newaxis], body_mass[:, cp.newaxis].T)
+        f_mat = G * mass_mat[:, :, cp.newaxis] / v_mat_len[:, :, cp.newaxis] ** 3 * v_mat
 
-    return [np.sum(row, axis=0) for row in f_mat]
+        forces: cp.ndarray = cp.sum(f_mat, axis=1)
+        body_pos += body_vel * dt
+        body_vel += forces * dt / body_mass[:, cp.newaxis]
 
-
-def task1_run(bodies: list[Body], t_end: float, dt: float) -> list[list[float]]:
-    result: list[list[float]] = []
-    local_result: list[float] = [0]
-
-    for body in bodies:
-        local_result.append(body.x)
-        local_result.append(body.y)
-
-    result.append(local_result)
-    it: int = int(np.ceil(t_end / dt))
-
-    for i in range(it):
-        forces: list[np.ndarray] = calc_f(bodies)
-        local_result: list[float] = [dt * (i + 1)]
-
-        for ind, body in enumerate(bodies):
-            body.x += body.vx * dt
-            body.y += body.vy * dt
-
-            body.vx += forces[ind][0] / body.mass * dt
-            body.vy += forces[ind][1] / body.mass * dt
-
-            local_result.append(body.x)
-            local_result.append(body.y)
-
-        result.append(local_result)
+        result[i + 1, 1:] = body_pos.flatten()
 
     return result
 
@@ -54,15 +28,24 @@ def task1_run(bodies: list[Body], t_end: float, dt: float) -> list[list[float]]:
 def main():
     with open(f'{BASE_PATH}/{FILE_IN_NAME}') as file:
         n: int = int(file.readline())
-        bodies: list[Body] = []
+        body_mass: cp.ndarray = cp.zeros(n, dtype=cp.float64)
+        body_pos: cp.ndarray = cp.zeros((n, 2), dtype=cp.float64)
+        body_vel: cp.ndarray = cp.zeros((n, 2), dtype=cp.float64)
 
+        ind = 0
         for line in file:
-            bodies.append(Body(*map(float, line.split(SEPARATOR))))
+            buf = list(map(float, line.split(SEPARATOR)))
+            body_mass[ind] = buf[0]
+            body_pos[ind, 0] = buf[1]
+            body_pos[ind, 1] = buf[2]
+            body_vel[ind, 0] = buf[3]
+            body_vel[ind, 1] = buf[4]
+            ind += 1
 
     t_end: float = float(input('Введи время окончания эксперимента\n'))
     dt: float = float(input('Введи время между шагами эксперимента\n'))
 
-    result: list[list[float]] = task1_run(bodies, t_end, dt)
+    result: cp.ndarray = task1_run(body_mass, body_pos, body_vel, t_end, dt).get()
 
     with open(f'{BASE_PATH}/{FILE_OUT_NAME}', 'w+') as file:
         for row in result:

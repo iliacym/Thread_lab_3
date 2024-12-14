@@ -14,7 +14,7 @@ def task1_run(body_mass: cp.ndarray, body_pos: cp.ndarray, body_vel: cp.ndarray,
         v_mat_len: cp.ndarray = cp.linalg.norm(v_mat, axis=2)
         v_mat_len[v_mat_len < EPS] = EPS
         mass_mat: cp.ndarray = cp.dot(body_mass[:, cp.newaxis], body_mass[:, cp.newaxis].T)
-        f_mat = G * mass_mat[:, :, cp.newaxis] / v_mat_len[:, :, cp.newaxis] ** 3 * v_mat
+        f_mat: cp.ndarra = G * mass_mat[:, :, cp.newaxis] / v_mat_len[:, :, cp.newaxis] ** 3 * v_mat
 
         forces: cp.ndarray = cp.sum(f_mat, axis=1)
         body_pos += body_vel * dt
@@ -32,15 +32,13 @@ def main():
         body_pos: cp.ndarray = cp.zeros((n, 2), dtype=cp.float64)
         body_vel: cp.ndarray = cp.zeros((n, 2), dtype=cp.float64)
 
-        ind = 0
-        for line in file:
+        for ind, line in enumerate(file):
             buf = list(map(float, line.split(SEPARATOR)))
             body_mass[ind] = buf[0]
             body_pos[ind, 0] = buf[1]
             body_pos[ind, 1] = buf[2]
             body_vel[ind, 0] = buf[3]
             body_vel[ind, 1] = buf[4]
-            ind += 1
 
     t_end: float = float(input('Введи время окончания эксперимента\n'))
     dt: float = float(input('Введи время между шагами эксперимента\n'))

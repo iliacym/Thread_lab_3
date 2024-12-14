@@ -1,9 +1,10 @@
-import multiprocessing
 import os
-import matplotlib.pyplot as plt
+from multiprocessing import Pool, cpu_count
+
 import numpy as np
+import matplotlib.pyplot as plt
 from matplotlib.animation import FuncAnimation
-from multiprocessing import Pool
+
 from Config import *
 
 result = []
@@ -32,7 +33,7 @@ def process_frames(start, end):
 
 
 def main():
-    num_processes = multiprocessing.cpu_count()
+    num_processes = cpu_count()
 
     frames_per_process = len(result) // num_processes
     remaining_frames = len(result) % num_processes

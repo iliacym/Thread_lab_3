@@ -1,4 +1,10 @@
 BASE_PATH = './'
-FILE_NAME = 'sos.al'
+FILE_IN_NAME = 'sos.al'
+FILE_OUT_NAME = 'sos.al.csv'
 SEPARATOR = ' '
 G = 6.6743 * 1e-11
+
+SIZE_OF_POINTS = 1000
+LEFT_EDGE = -1
+RIGHT_EDGE = 5
+TIME_DELAY = 500

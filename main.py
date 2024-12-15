@@ -16,9 +16,9 @@ def task1_run(body_mass: cp.ndarray, body_pos: cp.ndarray, body_vel: cp.ndarray,
     forces: cp.ndarray = cp.zeros_like(body_pos)
 
     mass_mat: cp.ndarray = cp.outer(body_mass, body_mass)
-    mass_mat = mass_mat[:, :, cp.newaxis]
+    g_mass_mat = G * mass_mat[:, :, cp.newaxis]
 
-    body_mass = body_mass[:, cp.newaxis]
+    body_mass = body_mass[:, cp.newaxis] * dt
 
     for i in tqdm(range(iters)):
         cp.subtract(body_pos, body_pos[:, cp.newaxis], out=v_mat)
@@ -26,12 +26,12 @@ def task1_run(body_mass: cp.ndarray, body_pos: cp.ndarray, body_vel: cp.ndarray,
         v_mat_len = cp.linalg.norm(v_mat, axis=2)
         cp.maximum(v_mat_len, EPS, out=v_mat_len)
 
-        cp.multiply(G * mass_mat / v_mat_len[:, :, cp.newaxis] ** 3, v_mat, out=f_mat)
+        cp.multiply(g_mass_mat / v_mat_len[:, :, cp.newaxis] ** 3, v_mat, out=f_mat)
 
         cp.sum(f_mat, axis=1, out=forces)
 
         body_pos += body_vel * dt
-        body_vel += forces * dt / body_mass
+        body_vel += forces / body_mass
 
         result[i + 1, 1:] = body_pos.flatten()
 

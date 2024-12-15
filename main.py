@@ -1,24 +1,37 @@
-import cupy as cp
+import numpy as cp
 from tqdm import tqdm
 
 from Config import *
 
 
 def task1_run(body_mass: cp.ndarray, body_pos: cp.ndarray, body_vel: cp.ndarray, t_end: float, dt: float) -> cp.ndarray:
-    result: cp.ndarray = cp.zeros((int(cp.ceil(t_end / dt)) + 1, body_pos.size + 1), dtype=cp.float64)
+    iters: int = int(cp.ceil(t_end / dt))
+
+    result: cp.ndarray = cp.zeros((iters + 1, body_pos.size + 1), dtype=cp.float64)
     result[:, 0] = cp.arange(0, t_end + dt, dt)
     result[0, 1:] = body_pos.flatten()
 
-    for i in tqdm(range(int(cp.ceil(t_end / dt)))):
-        v_mat: cp.ndarray = body_pos - body_pos[:, cp.newaxis, :]
-        v_mat_len: cp.ndarray = cp.linalg.norm(v_mat, axis=2)
-        v_mat_len[v_mat_len < EPS] = EPS
-        mass_mat: cp.ndarray = cp.dot(body_mass[:, cp.newaxis], body_mass[:, cp.newaxis].T)
-        f_mat: cp.ndarra = G * mass_mat[:, :, cp.newaxis] / v_mat_len[:, :, cp.newaxis] ** 3 * v_mat
+    v_mat: cp.ndarray = cp.zeros((body_pos.shape[0], body_pos.shape[0], 2))
+    f_mat: cp.ndarray = cp.zeros_like(v_mat)
+    forces: cp.ndarray = cp.zeros_like(body_pos)
 
-        forces: cp.ndarray = cp.sum(f_mat, axis=1)
+    mass_mat: cp.ndarray = cp.outer(body_mass, body_mass)
+    mass_mat = mass_mat[:, :, cp.newaxis]
+
+    body_mass = body_mass[:, cp.newaxis]
+
+    for i in tqdm(range(iters)):
+        cp.subtract(body_pos, body_pos[:, cp.newaxis], out=v_mat)
+
+        v_mat_len = cp.linalg.norm(v_mat, axis=2)
+        cp.maximum(v_mat_len, EPS, out=v_mat_len)
+
+        cp.multiply(G * mass_mat / v_mat_len[:, :, cp.newaxis] ** 3, v_mat, out=f_mat)
+
+        cp.sum(f_mat, axis=1, out=forces)
+
         body_pos += body_vel * dt
-        body_vel += forces * dt / body_mass[:, cp.newaxis]
+        body_vel += forces * dt / body_mass
 
         result[i + 1, 1:] = body_pos.flatten()
 

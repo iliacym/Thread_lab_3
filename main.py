@@ -1,4 +1,4 @@
-import numpy as cp
+import cupy as cp
 from tqdm import tqdm
 
 from Config import *

@@ -46,6 +46,7 @@ def main():
 
                 t1: Task1 = Task1()
                 t1.read_data(f'{BASE_PATH}/{TASK1_FILE_IN_NAME}')
+
                 result: np.ndarray = t1.run()
 
                 with open(f'{BASE_PATH}/{TASK1_FILE_OUT_NAME}', 'w+') as file:

@@ -4,6 +4,8 @@ __all__ = [
 
 import warnings
 
+from utils.time_checker import TimeChecker
+
 warnings.filterwarnings('ignore', message='CUDA path could not be detected')
 
 import cupy as cp
@@ -34,6 +36,7 @@ class Task1(AbstractTask):
         self._t_end: Optional[float] = None
         self._dt: Optional[float] = None
 
+    @TimeChecker.measure_time
     def run(self) -> np.ndarray:
         if self._dt is None:
             raise ValueError

@@ -26,24 +26,28 @@ GPU: NVIDIA GTX 1660<br>
 
 ### Примеры визуализаций
 
-<div style="overflow-x: auto;">
-  <table style="width: 100%; table-layout: fixed;">
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
     <tr>
-      <td style="text-align: center; width: 50%; vertical-align: top;">
+      <td align="center" valign="top" width="50%">
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <img src="res/3%20body.gif" alt="3 случайных тела" style="width: 100%; height: auto;"/>
-          <div>3 случайных тела</div>
+          <img src="res/3%20body.gif" alt="3 случайных тела" style="width: 100%; height: auto; max-width: 200px;"/>
+          <figcaption>3 случайных тела</figcaption>
         </div>
       </td>
-      <td style="text-align: center; width: 50%; vertical-align: top;">
+      <td align="center" valign="top" width="50%">
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <img src="res/earth_sun.gif" alt="Земля и Солнце" style="width: 100%; height: auto;"/>
-          <div>Земля и Солнце</div>
+          <img src="res/earth_sun.gif" alt="Земля и Солнце" style="width: 100%; height: auto; max-width: 200px;"/>
+          <figcaption>Земля и Солнце</figcaption>
         </div>
       </td>
     </tr>
-  </table>
-</div>
+  </tbody>
+</table>
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
 ## Задание 2 (Решение задачи Дирихле)
 
@@ -59,24 +63,28 @@ GPU: NVIDIA GTX 1660<br>
 Точность, предложенная в учебнике, мала, даже для сходимости небольшого числа точек, не говоря о
 предложенных 5000 точек. Поэтому мы использовали свою.
 
-<div style="overflow-x: auto;">
-  <table style="width: 100%; table-layout: fixed;">
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
     <tr>
-      <td style="text-align: center; width: 50%; vertical-align: top;">
+      <td align="center" valign="top" width="50%">
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <img src="res/Screenshot_17.png" alt="Точность из учебника" style="width: 100%; height: auto;"/>
-          <div>Точность из учебника</div>
+          <img src="res/Screenshot_17.png" alt="Точность из учебника" style="width: 100%; height: auto; max-width: 200px;"/>
+          <figcaption>Точность из учебника</figcaption>
         </div>
       </td>
-      <td style="text-align: center; width: 50%; vertical-align: top;">
+      <td align="center" valign="top" width="50%">
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <img src="res/Screenshot_18.png" alt="Предложенная нами точность" style="width: 100%; height: auto;"/>
-          <div>Предложенная нами точность</div>
+          <img src="res/Screenshot_18.png" alt="Предложенная нами точность" style="width: 100%; height: auto; max-width: 200px;"/>
+          <figcaption>Предложенная нами точность</figcaption>
         </div>
       </td>
     </tr>
-  </table>
-</div>
+  </tbody>
+</table>
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
 
 ### Оценка работы алгоритма
 

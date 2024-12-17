@@ -33,13 +33,13 @@ GPU: NVIDIA GTX 1660<br>
     <tr>
       <td align="center" valign="top" width="50%">
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <img src="res/3%20body.gif" alt="3 случайных тела" style="width: 100%; height: auto; max-width: 200px;"/>
+          <img src="res/3%20body.gif" alt="3 случайных тела" style="width: 100%; height: auto;"/>
           <figcaption>3 случайных тела</figcaption>
         </div>
       </td>
       <td align="center" valign="top" width="50%">
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <img src="res/earth_sun.gif" alt="Земля и Солнце" style="width: 100%; height: auto; max-width: 200px;"/>
+          <img src="res/earth_sun.gif" alt="Земля и Солнце" style="width: 100%; height: auto;"/>
           <figcaption>Земля и Солнце</figcaption>
         </div>
       </td>
@@ -55,6 +55,7 @@ GPU: NVIDIA GTX 1660<br>
 
 **Задача Дирихле** — это краевая задача для эллиптических дифференциальных уравнений, где на границе области
 задаются постоянные значения функции.  
+
 В начале матрица заполняется случайными числами, после чего, через итерационный процесс, вычисляются новые значения на
 сетке. Распараллеливание происходит с помощью использования директив препроцессора из OpenMP.
 
@@ -70,13 +71,13 @@ GPU: NVIDIA GTX 1660<br>
     <tr>
       <td align="center" valign="top" width="50%">
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <img src="res/Screenshot_17.png" alt="Точность из учебника" style="width: 100%; height: auto; max-width: 200px;"/>
+          <img src="res/Screenshot_17.png" alt="Точность из учебника" style="width: 100%; height: auto;"/>
           <figcaption>Точность из учебника</figcaption>
         </div>
       </td>
       <td align="center" valign="top" width="50%">
         <div style="display: flex; flex-direction: column; align-items: center;">
-          <img src="res/Screenshot_18.png" alt="Предложенная нами точность" style="width: 100%; height: auto; max-width: 200px;"/>
+          <img src="res/Screenshot_18.png" alt="Предложенная нами точность" style="width: 100%; height: auto;"/>
           <figcaption>Предложенная нами точность</figcaption>
         </div>
       </td>

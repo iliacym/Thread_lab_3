@@ -75,13 +75,16 @@ class Task1(AbstractTask):
 
         return np.array(result.get()) if type(result) is not np.ndarray else result
 
-    def read_data(self):  # todo дописать проверку на диапазон ввода
+    def read_data(self):
         while True:
             match input('Желаете ли вы сгенерировать данные тел? [y/n]\n'):
                 case 'y':
                     while True:
                         try:
                             n: int = int(input('Введите количество тел\n'))
+                            if n <= 0:
+                                print('Кол-во точек должно быть больше 0')
+                                continue
                             break
                         except ValueError:
                             print('Неверный ввод')
@@ -117,6 +120,9 @@ class Task1(AbstractTask):
         while True:
             try:
                 self._t_end: float = float(input('Введи время окончания эксперимента (в секундах)\n'))
+                if self._t_end <= 0:
+                    print('Время окончания должно быть больше 0')
+                    continue
                 break
             except ValueError:
                 print('Неверный ввод')
@@ -124,6 +130,9 @@ class Task1(AbstractTask):
         while True:
             try:
                 self._dt: float = float(input('Введи время между шагами эксперимента (в секундах)\n'))
+                if self._dt <= 0:
+                    print('Время между шагами должно быть больше 0')
+                    continue
                 break
             except ValueError:
                 print('Неверный ввод')

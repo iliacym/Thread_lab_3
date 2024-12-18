@@ -55,6 +55,15 @@ class Plotter:
             end = (i + 1) * frames_per_process + (remaining_frames if i == num_processes - 1 else 0)
             ranges.append((start, end))
 
+        try:
+            subprocess.run(['ffmpeg', '-version'], check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        except FileNotFoundError:
+            print('Броу, установи ffmpeg, это бесплатно')
+            return
+        except subprocess.CalledProcessError:
+            print('Броу, переустанови ffmpeg, твой не работает')
+            return
+
         with Pool(processes=num_processes) as pool:
             pool.starmap(self._process_frames, ranges)
 

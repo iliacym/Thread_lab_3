@@ -5,7 +5,6 @@ set(CMAKE_C_STANDARD 11)
 set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
 
 find_package(OpenMP REQUIRED)
-add_compile_options(-Wno-unused-result)
 
 add_library(
         Thread_lab_3

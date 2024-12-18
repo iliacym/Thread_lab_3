@@ -5,6 +5,7 @@ os.makedirs(BASE_PATH, exist_ok=True)
 
 TASK1_FILE_IN_NAME = 'input'
 TASK1_FILE_OUT_NAME = 'output.csv'
+TASK2_FILE_OUT_NAME = 'mat.txt'
 SEPARATOR = ' '
 
 G = 6.6743 * 1e-11

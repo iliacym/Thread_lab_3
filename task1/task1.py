@@ -2,8 +2,10 @@ __all__ = [
     'Task1'
 ]
 
+import os
 import warnings
 
+from utils.generator import Generator
 from utils.time_checker import TimeChecker
 
 warnings.filterwarnings('ignore', message='CUDA path could not be detected')
@@ -24,7 +26,7 @@ import numpy as np
 from typing import Optional
 from tqdm import tqdm
 
-from utils.config import EPS, G, SEPARATOR
+from utils.config import EPS, G, SEPARATOR, BASE_PATH, TASK1_FILE_IN_NAME
 from utils.abstract_task_class import AbstractTask
 
 
@@ -73,8 +75,32 @@ class Task1(AbstractTask):
 
         return np.array(result.get()) if type(result) is not np.ndarray else result
 
-    def read_data(self, file_path: str):
-        with open(file_path) as file:
+    def read_data(self):  # todo дописать проверку на диапазон ввода
+        while True:
+            match input('Желаете ли вы сгенерировать данные тел? [y/n]\n'):
+                case 'y':
+                    while True:
+                        try:
+                            n: int = int(input('Введите количество тел\n'))
+                            break
+                        except ValueError:
+                            print('Неверный ввод')
+
+                    generator: Generator = Generator(n)
+                    generator.generate()
+
+                    break
+
+                case 'n':
+                    if not os.path.exists(f'{BASE_PATH}/{TASK1_FILE_IN_NAME}'):
+                        print('Файл не найден')
+                        continue
+
+                    break
+                case _:
+                    print('Неверный ввод')
+
+        with open(f'{BASE_PATH}/{TASK1_FILE_IN_NAME}') as file:
             n: int = int(file.readline())
             self._body_mass: cp.ndarray = cp.zeros(n, dtype=cp.float64)
             self._body_pos: cp.ndarray = cp.zeros((n, 2), dtype=cp.float64)
@@ -88,5 +114,16 @@ class Task1(AbstractTask):
                 self._body_vel[ind, 0] = buf[3]
                 self._body_vel[ind, 1] = buf[4]
 
-        self._t_end: float = float(input('Введи время окончания эксперимента (в секундах)\n'))
-        self._dt: float = float(input('Введи время между шагами эксперимента (в секундах)\n'))
+        while True:
+            try:
+                self._t_end: float = float(input('Введи время окончания эксперимента (в секундах)\n'))
+                break
+            except ValueError:
+                print('Неверный ввод')
+
+        while True:
+            try:
+                self._dt: float = float(input('Введи время между шагами эксперимента (в секундах)\n'))
+                break
+            except ValueError:
+                print('Неверный ввод')

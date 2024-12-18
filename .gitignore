@@ -1,2 +1,5 @@
-.idea
-tmp
+/.idea/*
+!/.idea/cmake.xml
+/tmp/
+/task2/task2_c/cmake-build-release
+/task2/task2_c/cmake-build-release-wsl

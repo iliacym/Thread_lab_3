@@ -1,12 +1,10 @@
-import os.path
-
 import numpy as np
 
 from task1 import Task1
 from task2 import Task2
 from utils.plot import Plotter as HarryPlotter
-from utils.generator import Generator
-from utils.config import BASE_PATH, TASK1_FILE_IN_NAME, TASK1_FILE_OUT_NAME
+from utils.config import BASE_PATH, TASK1_FILE_OUT_NAME
+from utils.surface import Surface
 
 
 def main():
@@ -20,32 +18,8 @@ def main():
                     '[2] - Решение задачи Дирихле\n'
                     '[q] - Выйти\n'):
             case '1':
-                while True:
-                    match input('Желаете ли вы сгенерировать данные тел? [y/n]\n'):
-                        case 'y':
-                            while True:
-                                try:
-                                    n: int = int(input('Введите количество тел\n'))
-                                    break
-                                except ValueError:
-                                    print('Неверный ввод')
-
-                            generator: Generator = Generator(n)
-                            generator.generate()
-
-                            break
-
-                        case 'n':
-                            if not os.path.exists(f'{BASE_PATH}/{TASK1_FILE_IN_NAME}'):
-                                print('Файл не найден')
-                                continue
-
-                            break
-                        case _:
-                            print('Неверный ввод')
-
                 t1: Task1 = Task1()
-                t1.read_data(f'{BASE_PATH}/{TASK1_FILE_IN_NAME}')
+                t1.read_data()
 
                 result: np.ndarray = t1.run()
 
@@ -67,7 +41,23 @@ def main():
                             print('Неверный ввод')
 
             case '2':
-                pass
+                t2: Task2 = Task2()
+                t2.read_data()
+
+                t2.run()
+
+                while True:
+                    match input('Желаете ли построить график поверхности? [y/n]\n'):
+                        case 'y':
+                            surface: Surface = Surface()
+                            surface.plot()
+                            break
+
+                        case 'n':
+                            break
+
+                        case _:
+                            print('Неверный ввод')
 
             case 'q':
                 break

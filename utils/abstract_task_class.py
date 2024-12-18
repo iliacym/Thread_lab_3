@@ -8,9 +8,9 @@ import numpy as np
 
 class AbstractTask(ABC):
     @abstractmethod
-    def run(self) -> np.ndarray:
+    def run(self):
         pass
 
     @abstractmethod
-    def read_data(self, file: str):
+    def read_data(self):
         pass
